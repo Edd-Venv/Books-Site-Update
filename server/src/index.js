@@ -2,6 +2,7 @@ require("dotenv/config");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const pool = require("../database-conection/db.js");
 const { verify } = require("jsonwebtoken");
 const { hash, compare } = require("bcryptjs");
 const {
@@ -45,12 +46,17 @@ server.post("/register", async (req, res) => {
     if (user) throw new Error("User already exist");
     // 2. If not user exist already, hash the password
     const hashedPassword = await hash(password, 10);
-    // 3. Insert the user in "database"
+    // 3. Insert the user in database and fakeDB
+    const newUser = await pool.query(
+      "INSERT INTO person (id_uid, person_name, password) VALUES($1, $2, $3)",
+      [uuid_generate_v4(), email, hashedPassword]
+    );
     fakeDB.push({
       id: fakeDB.length,
       email,
       password: hashedPassword
     });
+    res.json(newUser);
     res.send({ message: "User Created" });
     console.log(fakeDB);
   } catch (err) {
