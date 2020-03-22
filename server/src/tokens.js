@@ -19,7 +19,7 @@ const createRefreshToken = userId => {
 const sendAccessToken = (res, req, accesstoken) => {
   res.send({
     accesstoken,
-    email: req.body.email
+    person_name: req.body.person_name
   });
 };
 
