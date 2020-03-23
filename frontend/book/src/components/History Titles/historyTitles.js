@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { HeaderContext } from "../contexts/headerContext/headerContext.js";
-import "./header.css";
+import { HistoryContext } from "../../contexts/HistoryContext/HistoryContext.js";
+import "./historyTitles.css";
 
-const Header = () => {
-  const { isLoaded, data } = useContext(HeaderContext);
+const HistoryTitles = () => {
+  const { isLoaded, data } = useContext(HistoryContext);
 
   return (
     <React.Fragment>
@@ -36,4 +36,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HistoryTitles;

@@ -1,9 +1,8 @@
 export const Reducer = (state, action) => {
-  console.log(state);
   switch (action.type) {
     case "GET":
-      return [action.state];
+      return { isLoaded: action.isLoaded, data: action.data };
     default:
-      return state;
+      throw new Error();
   }
 };

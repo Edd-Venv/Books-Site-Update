@@ -1,14 +1,14 @@
 import React from "react";
 import "./App.css";
-import Header from "./Header/header";
-import { HeaderContextProvider } from "./contexts/headerContext/headerContext.js";
+import HistoryTitles from "./components/History Titles/historyTitles.js";
+import { HistoryContextProvider } from "./contexts/HistoryContext/HistoryContext.js";
 function App() {
   return (
     <div className="App">
       <p>Connected</p>
-      <HeaderContextProvider>
-        <Header />
-      </HeaderContextProvider>
+      <HistoryContextProvider>
+        <HistoryTitles />
+      </HistoryContextProvider>
     </div>
   );
 }
