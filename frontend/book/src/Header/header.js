@@ -1,24 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Axios from "axios";
-import "./Header.css";
+import React, { useContext } from "react";
+import { HeaderContext } from "../contexts/headerContext/headerContext.js";
+import "./header.css";
 
-const Header = async () => {
-  const [currentState, setState] = useState([{ isLoaded: false, data: [] }]);
-  const apiKey = "2n9pws7675zn9bu39htq5gjz";
-  const url = `https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showCovers=true&api_key=${apiKey}`;
-  useEffect(() => {
-    console.log("RENDERING state", currentState);
-  }, [currentState]);
-  useEffect(
-    Axios.get(url).then(response => {
-      setState(() => [
-        { isLoaded: true, data: response.data.data.titles.slice(0, 4) }
-      ]);
-    }),
-    [currentState]
-  );
-  console.log(currentState);
-  const { isLoaded, data } = currentState;
+const Header = () => {
+  const { isLoaded, data } = useContext(HeaderContext);
+
   return (
     <React.Fragment>
       {isLoaded === false ? (
