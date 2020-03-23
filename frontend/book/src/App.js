@@ -4,37 +4,70 @@ import BestSellers from "./components/BestSellers/bestSeller.js";
 import { BestSellerContextProvider } from "./contexts/BestSellerContext/BestSellerContext.js";
 import HistoryTitles from "./components/History Titles/historyTitles.js";
 import { HistoryContextProvider } from "./contexts/HistoryContext/HistoryContext.js";
+import SundayReads from "./components/Sunday Reads/sundayReads.js";
+import { SundayReadsContextProvider } from "./contexts/SundayContext/SundayContext.js";
 
 function App() {
   return (
-    <div className="App">
+    <div
+      style={{
+        maxWidth: "1200px",
+        minWidth: "50%",
+        margin: "0 auto"
+      }}
+    >
+      <h2
+        style={{
+          textAlign: "center",
+          fontSize: "2.5rem",
+          fontWeight: "bolder",
+          color: "whitesmoke"
+        }}
+      >
+        BEST SELLER TITLES
+        <hr style={{ width: "22.5%", margin: "0 auto" }} />
+      </h2>
+      <br />
       <BestSellerContextProvider>
         <BestSellers />
       </BestSellerContextProvider>
+      <br />
+      <br />
+      <h2
+        style={{
+          textAlign: "center",
+          margin: "0 auto",
+          fontSize: "2.5rem",
+          fontWeight: "bolder",
+          color: "whitesmoke"
+        }}
+      >
+        HISTORY TITLES
+        <hr style={{ width: "19%", margin: "0 auto" }} />
+      </h2>
+      <br />
       <HistoryContextProvider>
         <HistoryTitles />
       </HistoryContextProvider>
+      <br />
+      <br />
+      <h2
+        style={{
+          textAlign: "center",
+          fontSize: "2.5rem",
+          fontWeight: "bolder",
+          color: "whitesmoke"
+        }}
+      >
+        SUNDAY READS
+        <hr style={{ width: "18.7%", margin: "0 auto" }} />
+      </h2>
+      <br />
+      <SundayReadsContextProvider>
+        <SundayReads />
+      </SundayReadsContextProvider>
     </div>
   );
 }
-/*
-
-const [currentState, setState] = useState([{ isLoaded: false, data: [] }]);
-  const apiKey = "2n9pws7675zn9bu39htq5gjz";
-  const url = `https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showCovers=true&api_key=${apiKey}`;
-  useEffect(() => {
-    console.log("RENDERING state", currentState);
-  }, [currentState]);
-  useEffect(
-    Axios.get(url).then(response => {
-      setState(() => [
-        { isLoaded: true, data: response.data.data.titles.slice(0, 4) }
-      ]);
-    }),
-    [currentState]
-  );
-  console.log(currentState);
-
-*/
 
 export default App;

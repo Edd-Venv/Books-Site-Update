@@ -23,7 +23,7 @@ export const bestSellerReducer = (state, action) => {
 export const sundayReadsReducer = (state, action) => {
   switch (action.type) {
     case "GET":
-      return {};
+      return { isLoaded: action.isLoaded, data: action.data };
     default:
       throw new Error();
   }
