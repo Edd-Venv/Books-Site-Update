@@ -1,11 +1,16 @@
 import React from "react";
 import "./App.css";
+import BestSellers from "./components/BestSellers/bestSeller.js";
+import { BestSellerContextProvider } from "./contexts/BestSellerContext/BestSellerContext.js";
 import HistoryTitles from "./components/History Titles/historyTitles.js";
 import { HistoryContextProvider } from "./contexts/HistoryContext/HistoryContext.js";
+
 function App() {
   return (
     <div className="App">
-      <p>Connected</p>
+      <BestSellerContextProvider>
+        <BestSellers />
+      </BestSellerContextProvider>
       <HistoryContextProvider>
         <HistoryTitles />
       </HistoryContextProvider>

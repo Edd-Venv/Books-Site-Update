@@ -1,0 +1,98 @@
+/*START OF IMAGE OVERLAY*/
+.container {
+  position: sticky;
+  width: 25%;
+  min-width: 85px;
+}
+.overlay-container {
+  width: 30%;
+}
+.flex-container-best-sellers {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 80%;
+  min-width: 50%;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 100%;
+  background-color: rgba(76, 103, 112, 0.8);
+  overflow: hidden;
+  width: 90%;
+  height: 0;
+  transition: 0.5s ease;
+}
+.container:hover .overlay {
+  cursor: pointer;
+  bottom: 0;
+  height: 100%;
+}
+.text {
+  white-space: nowrap;
+  text-align: start;
+  color: white;
+  font-size: 2.5rem;
+  position: absolute;
+  overflow: hidden;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+/*From a minimum width and bigger*/
+@media (min-width: 320px) {
+  .text {
+    font-size: 0.6rem;
+  }
+  .overlay {
+    width: 64%;
+  }
+}
+@media (min-width: 375px) {
+  .text {
+    font-size: 0.6rem;
+  }
+  .overlay {
+    width: 65%;
+  }
+}
+@media (min-width: 425px) {
+  .text {
+    font-size: 0.65rem;
+  }
+}
+@media (min-width: 768px) {
+  .text {
+    font-size: 1.4rem;
+  }
+  .overlay {
+    width: 80.5%;
+  }
+}
+@media (min-width: 1024px) {
+  .text {
+    font-size: 2.1rem;
+  }
+  .overlay {
+    width: 85%;
+  }
+}
+@media (min-width: 1024px) {
+  .text {
+    font-size: 2.1rem;
+  }
+  .overlay {
+    width: 85%;
+  }
+}
+@media (min-width: 1440px) {
+  .text {
+    font-size: 2.3rem;
+  }
+  .overlay {
+    width: 87%;
+  }
+}
+/*END OF IMAGE OVERLAY*/

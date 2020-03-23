@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useEffect } from "react";
-import { Reducer } from "../Reducer.js";
+import { historyReducer } from "../Reducer.js";
 
 const initialState = {
   isLoaded: false,
@@ -11,7 +11,7 @@ export const HistoryContext = createContext(initialState);
 
 //Provider Component
 export const HistoryContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(Reducer, initialState);
+  const [state, dispatch] = useReducer(historyReducer, initialState);
 
   //Get Data From API
   const apiKey = "2n9pws7675zn9bu39htq5gjz";
