@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { navigate } from "@reach/router";
 
 const Register = () => {
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async e => {
@@ -14,7 +14,7 @@ const Register = () => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          email: email,
+          person_name: name,
           password: password
         })
       })
@@ -28,8 +28,8 @@ const Register = () => {
   };
 
   const handleChange = e => {
-    if (e.currentTarget.name === "email") {
-      setEmail(e.currentTarget.value);
+    if (e.currentTarget.name === "name") {
+      setName(e.currentTarget.value);
     } else {
       setPassword(e.currentTarget.value);
     }
@@ -41,12 +41,11 @@ const Register = () => {
         <div>Register</div>
         <div className="login-input">
           <input
-            value={email}
+            value={name}
             onChange={handleChange}
             type="text"
-            name="email"
-            placeholder="Email"
-            autoComplete="email"
+            name="name"
+            placeholder="Name"
             required
           />
           <input
