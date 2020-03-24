@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import Search from "./components/Search/Search";
 import BestSellers from "./components/BestSellers/bestSeller.js";
 import { BestSellerContextProvider } from "./contexts/BestSellerContext/BestSellerContext.js";
 import HistoryTitles from "./components/History Titles/historyTitles.js";
@@ -16,10 +17,12 @@ function App() {
         margin: "0 auto"
       }}
     >
+      <Search />
+      <br />
       <h2
         style={{
           textAlign: "center",
-          fontSize: "2.5rem",
+          fontSize: "2.1rem",
           fontWeight: "bolder",
           color: "whitesmoke"
         }}
@@ -37,7 +40,7 @@ function App() {
         style={{
           textAlign: "center",
           margin: "0 auto",
-          fontSize: "2.5rem",
+          fontSize: "2.1rem",
           fontWeight: "bolder",
           color: "whitesmoke"
         }}
@@ -54,7 +57,7 @@ function App() {
       <h2
         style={{
           textAlign: "center",
-          fontSize: "2.5rem",
+          fontSize: "2.1rem",
           fontWeight: "bolder",
           color: "whitesmoke"
         }}

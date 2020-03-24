@@ -15,12 +15,8 @@ class Search extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const apiKey = "2n9pws7675zn9bu39htq5gjz";
-    const url = `https://api.penguinrandomhouse.com/resources/v2/title/domains/PRH.US/search/views/search-display?q=${
-      this.state.value
-    }&api_key=${apiKey}`;
+    const url = `https://api.penguinrandomhouse.com/resources/v2/title/domains/PRH.US/search/views/search-display?q=${this.state.value}&api_key=${apiKey}`;
     Axios.get(url).then(response => {
-      console.log(response.data.data.results[0].flapCopy);
-      console.log(response.data.data.results[0]);
       this.setState({
         isLoaded: true,
         data: response.data.data.results[0],
@@ -64,6 +60,7 @@ class Search extends React.Component {
     const { data, display, summary, isLoaded } = this.state;
     return (
       <React.Fragment>
+        //FORM
         <form onSubmit={this.handleSubmit} style={{ marginLeft: "38%" }}>
           <span className="form-inline">
             <input
@@ -81,6 +78,7 @@ class Search extends React.Component {
           </span>
         </form>
         <br />
+        //ERROR
         <div>
           <div className={display}>
             <span
@@ -108,6 +106,7 @@ class Search extends React.Component {
                 Sorry, Book Not In DataBase
               </p>
             ) : (
+              //RESult
               <div
                 style={{
                   width: "60%",
