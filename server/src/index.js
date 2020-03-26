@@ -123,11 +123,10 @@ server.post("/logout", async (_req, res) => {
 // 4. Protected route
 server.post("/protected", async (req, res) => {
   try {
-    //console.log(req);
     const userId = isAuth(req);
     if (userId !== null) {
       res.send({
-        data: "This is protected data."
+        data: "This is protected data from server."
       });
     }
   } catch (err) {
@@ -181,6 +180,17 @@ server.post("/refresh_token", async (req, res) => {
     return res.send({ accesstoken });
   } catch (err) {
     return res.send(err);
+  }
+});
+
+//Handles saving a book and fetch the data of the user after authentication
+server.post("/", async (req, res) => {
+  if (req.body.book_image) {
+    console.log("serverSide bookImage", req.body.book_image);
+    return res.send({ data: "Book Saved" });
+  } else if (req.body.person_name) {
+    console.log("serverSide personName", req.body.person_name);
+    return res.send({ data: "personName" });
   }
 });
 
