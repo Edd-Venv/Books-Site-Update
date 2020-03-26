@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { UserContext } from "../App";
+import { UserContext } from "../../App.js";
+import Navigation from "../Navigation/Navigation.js";
 
 const Protected = () => {
   // Could have something here to check for the time when the accesstoken expires
@@ -18,12 +19,18 @@ const Protected = () => {
           }
         })
       ).json();
+      console.log(result);
       if (result.data) setContent(result.data);
     }
     fetchProtected();
   }, [user]);
 
-  return <div>{content}</div>;
+  return (
+    <React.Fragment>
+      <Navigation displayLogin={"dontDisplayLoginForm"} />
+      <div>{content}</div>
+    </React.Fragment>
+  );
 };
 
 export default Protected;

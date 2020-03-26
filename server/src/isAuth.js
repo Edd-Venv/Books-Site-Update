@@ -6,7 +6,9 @@ const isAuth = req => {
   // Based on 'Bearer ksfljrewori384328289398432'
 
   const token = authorization.split(" ")[1];
+
   const { userId } = verify(token, process.env.ACCESS_TOKEN_SECRET);
+
   return userId;
 };
 
