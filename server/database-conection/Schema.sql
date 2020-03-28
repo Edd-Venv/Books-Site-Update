@@ -50,6 +50,9 @@ create table person (
     UNIQUE(refreshtoken)
 );
 
+DELETE FROM book WHERE person_id = '0d0b845f-98bd-477b-8747-6ea99bff6509';
+DELETE FROM person WHERE id_uid = '0d0b845f-98bd-477b-8747-6ea99bff6509';
+
 
 
 select * from pg_available_extentions;
