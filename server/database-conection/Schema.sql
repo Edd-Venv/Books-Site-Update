@@ -16,13 +16,6 @@ create table book (
 
 
 create table book (
-  book_id SERIAL PRIMARY KEY,
-  person_id UUID NOT NULL,
-  book_image VARCHAR(100) NOT NULL,
-  id_uid UUID REFERENCES person
-)
-
-create table book (
     book_id BIGSERIAL PRIMARY KEY,
     person_id UUID NOT NULL,
     book_image VARCHAR(300) NOT NULL,
@@ -63,6 +56,3 @@ select * from pg_available_extentions;
 create extension if not exists 'uuid-ossp';
 
 insert into person (id_uid, person_name, password) values (uuid_generate_v4(), 'edd', 'test');
-
-select * from person;
-
