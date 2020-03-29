@@ -7,26 +7,35 @@ const HistoryTitles = () => {
   const { isLoaded, data } = useContext(HistoryContext);
   const [user] = useContext(UserContext);
 
-  async function saveBook(Link) {
+  async function saveBook(Args) {
     if (!user.accesstoken)
       return console.log("You need to login to Save Book.");
-    else
-      try {
-        const result = await (
-          await fetch("http://localhost:4000/", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${user.accesstoken}` //To Be Converted To User ID using Auth in Server
-            },
-            body: JSON.stringify({
-              book_image: Link
-            })
+    else {
+      const result = await (
+        await fetch("http://localhost:4000/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user.accesstoken}` //To Be Converted To User ID using Auth in Server
+          },
+          body: JSON.stringify({
+            book_image: Args[0],
+            book_key: Args[1],
+            book_title: Args[2],
+            book_author: Args[3],
+            book_price: Args[4],
+            book_currencyCode: Args[5],
+            book_pages: Args[6]
           })
-        ).json();
-      } catch (error) {
-        console.log(error);
+        })
+      ).json();
+
+      if (!result.error) {
+        console.log(result.message);
+      } else {
+        console.log(result.error);
       }
+    }
   }
   return (
     <React.Fragment>
@@ -50,7 +59,17 @@ const HistoryTitles = () => {
                   style={{ width: "100%" }}
                   id="box"
                 />
-                <button onClick={saveBook.bind(this, info._links[1].href)}>
+                <button
+                  onClick={saveBook.bind(this, [
+                    info._links[1].href,
+                    info.isbn,
+                    info.title,
+                    info.author,
+                    info.price[0].amount,
+                    info.price[0].currencyCode,
+                    info.pages
+                  ])}
+                >
                   save
                 </button>
               </div>

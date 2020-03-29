@@ -20,7 +20,6 @@ function App() {
     });
     // Clear user from context
     setUser({});
-    // Navigate back to startpage
     navigate("/");
   };
 

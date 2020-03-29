@@ -7,7 +7,7 @@ import { HistoryContextProvider } from "./contexts/HistoryContext/HistoryContext
 import SundayReads from "./components/Sunday Reads/sundayReads.js";
 import { SundayReadsContextProvider } from "./contexts/SundayContext/SundayContext.js";
 
-function App2() {
+function Views() {
   return (
     <div
       style={{
@@ -72,4 +72,4 @@ function App2() {
   );
 }
 
-export default React.memo(App2);
+export default React.memo(Views);
