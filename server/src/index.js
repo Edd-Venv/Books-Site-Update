@@ -18,8 +18,7 @@ const { isAuth } = require("./isAuth.js");
 // 1. Register a user
 // 2. Login a user
 // 3. Logout a user
-// 4. Setup a protected route
-// 5. Get a new accesstoken with a refresh token
+// 4. Get a new accesstoken with a refresh token
 
 const server = express();
 
@@ -92,7 +91,8 @@ server.post("/login", async (req, res) => {
 
     // 4. Store Refreshtoken with user in db
     await pool.query(
-      `UPDATE person SET refreshtoken = '${refreshtoken}' WHERE id_uid = '${user.id_uid}'`
+      `UPDATE person SET refreshtoken = '${refreshtoken}'
+       WHERE id_uid = '${user.id_uid}'`
     );
 
     // 5. Send token. Refreshtoken as a cookie and accesstoken as a regular response
@@ -120,25 +120,10 @@ server.post("/logout", async (_req, res) => {
   });
 });
 
-// 4. Protected route
-server.post("/protected", async (req, res) => {
-  try {
-    const userId = isAuth(req);
-    if (userId !== null) {
-      res.send({
-        data: "This is protected data from server."
-      });
-    }
-  } catch (err) {
-    res.send({
-      error: `${err.message}`
-    });
-  }
-});
-
-// 5. Get a new access token with a refresh token
+// 4. Get a new access token with a refresh token
 server.post("/refresh_token", async (req, res) => {
   const token = req.cookies.refreshtoken;
+
   // If we don't have a token in our request ask to relogin I think
   if (!token) return res.send({ accesstoken: "" });
   // We have a token, let's verify it!
@@ -172,7 +157,8 @@ server.post("/refresh_token", async (req, res) => {
 
     //Update refreshtoken on user in dataBase
     await pool.query(
-      `UPDATE person SET refreshtoken = '${refreshtoken}' WHERE id_uid = '${id_uid}'`
+      `UPDATE person SET refreshtoken = '${refreshtoken}'
+       WHERE id_uid = '${id_uid}'`
     );
 
     //All Checks Out send new refreshtoken and accesstoken
@@ -183,14 +169,157 @@ server.post("/refresh_token", async (req, res) => {
   }
 });
 
-//Handles saving a book and fetch the data of the user after authentication
-server.post("/", async (req, res) => {
-  if (req.body.book_image) {
-    console.log("serverSide bookImage", req.body.book_image);
-    return res.send({ data: "Book Saved" });
-  } else if (req.body.person_name) {
-    console.log("serverSide personName", req.body.person_name);
-    return res.send({ data: "personName" });
+/////////           ROUTES
+
+//Sending Client's UserName
+server.get("/userName", async (req, res, next) => {
+  const userId = isAuth(req);
+
+  if (userId !== null) {
+    try {
+      const user = await pool.query(
+        `SELECT person_name FROM person WHERE id_uid = '${userId}'`
+      );
+
+      res.send({ name: user.rows[0].person_name });
+    } catch (error) {
+      res.send({ error: error });
+    }
+  }
+});
+
+//Saving a book after the user authentication
+server.post("/", async (req, res, next) => {
+  const userId = isAuth(req);
+  if (userId !== null) {
+    try {
+      //Check If Book is Already Saved
+      const checkDB = await pool.query(
+        `SELECT * FROM book WHERE book_key = '${req.body.book_key}'
+         AND person_id = '${userId}'`
+      );
+
+      const doesBookExist = checkDB.rows[0];
+      if (doesBookExist !== undefined) return null;
+      //I can put the check outside the try catch block to get the error but it will crush the app
+      //res.json(`<p>${req.body.book_title} is already saved.</p>`);
+
+      const values = [
+        userId,
+        req.body.book_image,
+        req.body.book_key,
+        req.body.book_title,
+        req.body.book_author,
+        req.body.book_price,
+        req.body.book_currencyCode,
+        req.body.book_pages
+      ];
+      pool.query(
+        `INSERT INTO book (person_id, book_image, book_key, book_title,
+          book_author,
+          book_price,
+          book_currencyCode,
+          book_pages) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8)`,
+        values,
+        (q_err, q_res) => {
+          if (q_err) return next(q_err);
+          res.json({ message: "Book Saved" });
+        }
+      );
+    } catch (err) {
+      res.json({ error: err });
+    }
+  }
+});
+
+//Getting Protected data
+server.get("/protected", async (req, res) => {
+  try {
+    const userId = isAuth(req);
+    if (userId !== null) {
+      const books = await pool.query(
+        `SELECT * FROM book WHERE person_id = '${userId}'`
+      );
+      res.send({
+        data: books.rows
+      });
+    }
+  } catch (err) {
+    res.json({
+      error: `${err.message}`
+    });
+  }
+});
+
+//Delete Protected Data
+server.post("/protected", async (req, res) => {
+  try {
+    const userId = isAuth(req);
+    if (userId !== null) {
+      await pool.query(
+        `DELETE FROM book WHERE book_key = '${req.body.book_key}'
+         AND person_id = '${userId}'`
+      );
+
+      res.json({ message: `${req.body.book_title} Deleted.` });
+    }
+  } catch (error) {
+    res.json({ error: "Book Not Deleted." });
+  }
+});
+
+/////                    SETTINGS
+
+server.post("/settings/changePassword", async (req, res) => {
+  try {
+    const userId = isAuth(req);
+    if (userId !== null) {
+      const { new_password, old_password } = req.body;
+
+      const checkDB = await pool.query(
+        `SELECT * from person where id_uid = '${userId}'`
+      );
+      const user = checkDB.rows[0];
+
+      const valid = await compare(old_password, user.password);
+      if (!valid) throw new Error("Password not correct");
+
+      const hashedPassword = await hash(new_password, 10);
+      await pool.query(`UPDATE person SET password = '${hashedPassword}' 
+      WHERE id_uid = '${userId}'`);
+    }
+    res.json({ message: "Password Changed." });
+  } catch (error) {
+    res.json({ error: "Password Not Changed." });
+  }
+});
+
+server.post("/settings/changeName", async (req, res) => {
+  try {
+    const userId = isAuth(req);
+    if (userId !== null) {
+      await pool.query(
+        `UPDATE person SET person_name = '${req.body.new_name}' 
+        WHERE id_uid = '${userId}' AND person_name = '${req.body.old_name}'`
+      );
+    }
+    res.json({ message: "User Name Updated" });
+  } catch (error) {
+    res.json({ error: "User Name Already Taken." });
+  }
+});
+
+server.post("/deleteUser", async (req, res) => {
+  try {
+    const userId = isAuth(req);
+    if (userId !== null) {
+      await pool.query(`DELETE FROM book WHERE person_id = '${userId}'`);
+      await pool.query(`DELETE FROM person WHERE id_uid = '${userId}'`);
+
+      res.json({ message: "User Deleted." });
+    }
+  } catch (error) {
+    res.send({ error: "User Not Deleted." });
   }
 });
 
