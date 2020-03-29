@@ -1,24 +1,20 @@
 require("dotenv/config");
 const express = require("express");
+const fetch = require("node-fetch");
 const uuid_generate = require("uuid");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const pool = require("../database-conection/db.js");
 const { verify } = require("jsonwebtoken");
 const { hash, compare } = require("bcryptjs");
+const { isAuth } = require("./isAuth.js");
+const redis = require("redis");
 const {
   createAccessToken,
   createRefreshToken,
   sendRefreshToken,
   sendAccessToken
 } = require("./tokens.js");
-
-const { isAuth } = require("./isAuth.js");
-
-// 1. Register a user
-// 2. Login a user
-// 3. Logout a user
-// 4. Get a new accesstoken with a refresh token
 
 const server = express();
 
@@ -35,6 +31,52 @@ server.use(
 // Needed to be able to read body data
 server.use(express.json()); // to support JSON-encoded bodies
 server.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
+
+/////REDIS
+
+const REDIS_PORT = 4000 || 6379;
+//const client = redis.createClient(REDIS_PORT);
+
+/////////////////////////////////////////////////// API CALLS
+const sundayReadsAPI =
+  "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/20/titles?showCovers=true&api_key=2n9pws7675zn9bu39htq5gjz";
+server.get("/sundayReads", async (req, res) => {
+  try {
+    const result = await (await fetch(sundayReadsAPI)).json();
+    res.json({ data: result });
+  } catch (error) {
+    res.json({ error: error });
+  }
+});
+
+const historyAPI =
+  "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showCovers=true&api_key=2n9pws7675zn9bu39htq5gjz";
+server.get("/history", async (req, res) => {
+  try {
+    const result = await (await fetch(historyAPI)).json();
+    res.json({ data: result });
+  } catch (error) {
+    res.json({ error: error });
+  }
+});
+
+const bestSellersAPI =
+  "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showBestsellers=true&showCovers=true&api_key=2n9pws7675zn9bu39htq5gjz";
+server.get("/bestSellers", async (req, res) => {
+  try {
+    const result = await (await fetch(bestSellersAPI)).json();
+    res.json({ data: result });
+  } catch (error) {
+    res.json({ error: error });
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////
+
+// 1. Register a user
+// 2. Login a user
+// 3. Logout a user
+// 4. Get a new accesstoken with a refresh token
 
 // 1. Register a user
 server.post("/register", async (req, res) => {

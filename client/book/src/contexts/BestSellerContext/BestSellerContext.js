@@ -13,11 +13,7 @@ export const BestSellerContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(bestSellerReducer, initialState);
 
   useEffect(() => {
-    const apiKey = "2n9pws7675zn9bu39htq5gjz";
-
-    fetch(
-      `https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showBestsellers=true&showCovers=true&api_key=${apiKey}`
-    )
+    fetch("http://localhost:4000/bestSellers")
       .then(results => {
         return results.json();
       })
@@ -25,7 +21,7 @@ export const BestSellerContextProvider = ({ children }) => {
         dispatch({
           type: "GET",
           isLoaded: true,
-          data: Data.data.titles.slice(6, 9),
+          data: Data.data.data.titles.slice(6, 9),
           ContainerVisibilty: ""
         });
       });

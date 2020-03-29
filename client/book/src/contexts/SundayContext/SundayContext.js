@@ -8,11 +8,8 @@ export const sundayReadsContext = createContext(initialState);
 export const SundayReadsContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(sundayReadsReducer, initialState);
 
-  const apiKey = "2n9pws7675zn9bu39htq5gjz";
   useEffect(() => {
-    fetch(
-      `https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/20/titles?showCovers=true&api_key=${apiKey}`
-    )
+    fetch("http://localhost:4000/sundayReads")
       .then(result => {
         return result.json();
       })
@@ -20,7 +17,7 @@ export const SundayReadsContextProvider = ({ children }) => {
         dispatch({
           type: "GET",
           isLoaded: true,
-          data: Data.data.titles.slice(0, 5)
+          data: Data.data.data.titles.slice(0, 5)
         });
       });
   }, []);
