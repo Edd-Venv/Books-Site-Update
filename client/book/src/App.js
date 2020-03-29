@@ -1,18 +1,18 @@
 import "./App.css";
-import "./App2.js";
 import React, { useState, useEffect } from "react";
 import { Router, navigate } from "@reach/router";
-import Navigation from "./http/Navigation/Navigation.js";
 import Register from "./http/Register/Register.js";
 import Protected from "./http/Content/Protected.js";
 import Content from "./http/Content/Content.js";
-import App2 from "./App2.js";
+import Settings from "./http/Settings/Settings.js";
+import Login from "./http/Login/Login.js";
 
 export const UserContext = React.createContext([]);
 
 function App() {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+
   const logOutCallback = async () => {
     await fetch("http://localhost:4000/logout", {
       method: "POST",
@@ -43,22 +43,24 @@ function App() {
     }
     checkRefreshToken();
   }, []);
-  /*const getUserName = name => {
-    console.log(name);
-  };*/
+
   if (loading) return <div>Loading ...</div>;
   return (
     <React.Fragment>
       <UserContext.Provider value={[user, setUser]}>
         <div className="app">
           <Router id="router">
-            <Navigation path="/" logOutCallback={logOutCallback} />
+            <Login path="login" />
             <Register path="register" />
             <Protected path="protected" />
-            <Content path="/" />
+            <Settings path="settings" logOutCallback={logOutCallback} />
+            <Content
+              path="/"
+              loading={loading}
+              logOutCallback={logOutCallback}
+            />
           </Router>
         </div>
-        <App2 />
       </UserContext.Provider>
     </React.Fragment>
   );

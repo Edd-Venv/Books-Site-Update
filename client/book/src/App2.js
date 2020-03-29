@@ -72,4 +72,4 @@ function App2() {
   );
 }
 
-export default App2;
+export default React.memo(App2);
