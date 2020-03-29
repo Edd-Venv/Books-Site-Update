@@ -19,7 +19,7 @@ const SearchForm = React.memo(props => {
           }}
           value={currentText}
           placeholder="Book Title"
-          style={{ width: "35%", fontSize: "1.2rem" }}
+          style={{ width: "35%", fontSize: "1.5rem" }}
           id="input"
           required
         />
