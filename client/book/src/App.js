@@ -43,7 +43,16 @@ function App() {
     checkRefreshToken();
   }, []);
 
-  if (loading) return <div>Loading ...</div>;
+  if (loading)
+    return (
+      <div
+        className="spinner-grow text-dark"
+        role="status"
+        style={{ margin: "auto" }}
+      >
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
   return (
     <React.Fragment>
       <UserContext.Provider value={[user, setUser]}>

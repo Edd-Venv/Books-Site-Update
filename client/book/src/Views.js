@@ -45,7 +45,7 @@ function Views() {
         }}
       >
         HISTORY TITLES
-        <hr style={{ width: "19%", margin: "0 auto" }} />
+        <hr style={{ width: "22.5%", margin: "0 auto" }} />
       </h2>
       <br />
       <HistoryContextProvider>
@@ -62,7 +62,7 @@ function Views() {
         }}
       >
         SUNDAY READS
-        <hr style={{ width: "18.7%", margin: "0 auto" }} />
+        <hr style={{ width: "22.5%", margin: "0 auto" }} />
       </h2>
       <br />
       <SundayReadsContextProvider>

@@ -7,3 +7,6 @@
 .dontDisplayLoginForm {
   display: none;
 }
+#logoutButton:hover {
+  cursor: pointer;
+}
