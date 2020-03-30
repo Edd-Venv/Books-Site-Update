@@ -20,13 +20,14 @@ const Navigation = ({ logOutCallback }) => {
   const showLogOut = () => {
     if (user.accesstoken)
       return (
-        <i
+        <p
           className="nav-link"
           onClick={logOutCallback}
           style={{ paddingTop: "1.3rem" }}
+          id="logoutButton"
         >
           LogOut
-        </i>
+        </p>
       );
     else return null;
   };
@@ -54,10 +55,6 @@ const Navigation = ({ logOutCallback }) => {
   return (
     <React.Fragment>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <h4 style={{ color: "black" }}>
-          <i>Welcome</i>
-        </h4>
-        <UserLogo />
         <button
           className="navbar-toggler"
           type="button"
@@ -70,10 +67,7 @@ const Navigation = ({ logOutCallback }) => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul
-            className="navbar-nav"
-            style={{ marginLeft: "80%", fontSize: "1.7rem" }}
-          >
+          <ul className="navbar-nav" style={{ fontSize: "1.7rem" }}>
             <li className="nav-item active">
               <Link className="nav-link" to="/">
                 Home<span className="sr-only">(current)</span>
@@ -100,6 +94,11 @@ const Navigation = ({ logOutCallback }) => {
             <li className="nav-item active">{showSettings()}</li>
           </ul>
         </div>
+
+        <h4 style={{ color: "black" }}>
+          <i>Welcome</i>
+          <UserLogo />
+        </h4>
       </nav>
     </React.Fragment>
   );

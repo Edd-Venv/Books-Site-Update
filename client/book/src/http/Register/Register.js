@@ -40,18 +40,27 @@ const Register = () => {
     <React.Fragment>
       <Navigation displayLogin={"dontDisplayLoginForm"} />
       <div className="login-wrapper">
-        <form onSubmit={handleSubmit}>
-          <div>Register</div>
-          <div className="login-input">
+        <form
+          onSubmit={handleSubmit}
+          style={{ width: "30%", margin: "0 auto", font: "2rem" }}
+        >
+          <h3 style={{ textAlign: "center" }}>REGISTER</h3>
+          <div className="form-group">
+            <label htmlFor="name">USER NAME</label>
             <input
+              className="form-control"
               value={name}
               onChange={handleChange}
               type="text"
               name="name"
-              placeholder="Name"
+              placeholder="User Name"
               required
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">PASSWORD</label>
             <input
+              className="form-control"
               value={password}
               onChange={handleChange}
               type="password"
@@ -60,8 +69,10 @@ const Register = () => {
               placeholder="Password"
               required
             />
-            <button type="submit">Register</button>
           </div>
+          <button type="submit" className="btn btn-primary">
+            Register
+          </button>
         </form>
       </div>
     </React.Fragment>
