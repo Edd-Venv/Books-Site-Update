@@ -36,28 +36,37 @@ function ChangeUserPwd(props) {
     } else setNewPwd(event.target.value);
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="old password" />
+    <form
+      onSubmit={handleSubmit}
+      style={{ width: "30%", margin: "0 auto", font: "2rem" }}
+    >
+      <div className="form-group">
+        <label htmlFor="old password">OLD PASSWORD</label>
         <input
+          className="form-control"
           value={oldPwd}
           placeholder="Old Password"
           type="password"
           onChange={handleInput}
           name="old password"
+          required
         />
       </div>
-      <div>
-        <label htmlFor="new password" />
+      <div className="form-group">
+        <label htmlFor="new password">NEW PASSWORD</label>
         <input
+          className="form-control"
           name="new password"
           value={newPwd}
           placeholder="New Password"
           type="password"
           onChange={handleInput}
+          required
         />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" className="btn btn-primary">
+        Submit
+      </button>
     </form>
   );
 }

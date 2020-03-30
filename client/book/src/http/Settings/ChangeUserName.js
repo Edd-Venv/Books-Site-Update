@@ -34,33 +34,42 @@ function ChangeUserName(props) {
 
   const handleInput = event => {
     if (event.target.name === "old Name") {
-      setOldName(event.target.value);
-    } else setNewName(event.target.value);
+      setOldName(event.target.value.toUpperCase());
+    } else setNewName(event.target.value.toUpperCase());
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="old Name" />
+    <form
+      onSubmit={handleSubmit}
+      style={{ width: "30%", margin: "0 auto", font: "2rem" }}
+    >
+      <div className="form-group">
+        <label htmlFor="old Name">OLD USERNAME</label>
         <input
+          className="form-control"
           value={oldName}
           type="text/number"
           name="old Name"
           placeholder="Old Name"
           onChange={handleInput}
+          required
         />
       </div>
-      <div>
-        <label htmlFor="new Name" />
+      <div className="form-group">
+        <label htmlFor="new Name">NEW USERNAME</label>
         <input
+          className="form-control"
           value={newName}
           type="text/number"
           name="new Name"
           placeholder="New Name"
           onChange={handleInput}
+          required
         />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" className="btn btn-primary">
+        Submit
+      </button>
     </form>
   );
 }
