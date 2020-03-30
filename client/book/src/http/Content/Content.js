@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { UserContext } from "../../App.js";
+import React from "react";
+
 import Views from "../../Views.js";
 import Navigation from "../Navigation/Navigation.js";
 

@@ -52,11 +52,21 @@ const Protected = () => {
       <Navigation displayLogin={"dontDisplayLoginForm"} />
       <br />
       {!user.accesstoken ? (
-        <div>You need to login</div>
+        <h2 style={{ textAlign: "center", fontWeight: "bold" }}>
+          You need to login
+        </h2>
       ) : user.accesstoken && content[0] === undefined ? (
-        <div>loading...</div>
+        <div
+          className="spinner-grow text-dark"
+          role="status"
+          style={{ margin: "auto" }}
+        >
+          <span className="sr-only">Loading...</span>
+        </div>
       ) : user.accesstoken && content[0].length === 0 ? (
-        <div>You Don't Have Books Saved</div>
+        <h2 style={{ textAlign: "center", fontWeight: "bold" }}>
+          You Don't Have Books Saved.
+        </h2>
       ) : (
         <div className="flex-container-header">
           {content[0].map(info => {

@@ -38,7 +38,7 @@ const Login = props => {
 
   const handleChange = e => {
     if (e.target.name === "name") {
-      setName(e.target.value);
+      setName(e.target.value.toUpperCase());
     } else {
       setPassword(e.target.value);
     }
@@ -50,29 +50,39 @@ const Login = props => {
     <React.Fragment>
       <Navigation />
       <div className={displayLogin}>
-        <div className="login-wrapper">
-          <form onSubmit={handleSubmit}>
-            <div>Login</div>
-            <div className="login-input">
-              <input
-                value={name}
-                onChange={handleChange.bind(this)}
-                type="text"
-                name="name"
-                placeholder="Name"
-              />
-              <input
-                value={password}
-                onChange={handleChange}
-                type="password"
-                name="password"
-                autoComplete="current-password"
-                placeholder="Password"
-              />
-              <button type="submit">Login</button>
-            </div>
-          </form>
-        </div>
+        <form
+          onSubmit={handleSubmit}
+          style={{ width: "30%", margin: "0 auto", font: "2rem" }}
+        >
+          <div className="form-group">
+            <label htmlFor="name">USER NAME</label>
+            <input
+              className="form-control"
+              value={name}
+              onChange={handleChange.bind(this)}
+              type="text"
+              name="name"
+              placeholder="User Name"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">PASSWORD</label>
+            <input
+              className="form-control"
+              value={password}
+              onChange={handleChange}
+              type="password"
+              name="password"
+              autoComplete="current-password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Login
+          </button>
+        </form>
       </div>
     </React.Fragment>
   );
