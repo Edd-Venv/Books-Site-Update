@@ -27,16 +27,18 @@ function Settings(props) {
 
     props.logOutCallback();
   };
-
+  const style = {
+    textAlign: "center"
+  };
   return (
     <React.Fragment>
       <Navigation />
-      <h3>Change Name</h3>
+      <h3 style={style}>Change Name</h3>
       <ChangeUserName logOutCallback={props.logOutCallback} />
-      <h3>Change Password</h3>
+      <h3 style={style}>Change Password</h3>
       <ChangeUserPwd logOutCallback={props.logOutCallback} />
       <h3>DELETE Profile</h3>
-      <button onClick={deleteUser}>
+      <button className="btn btn-primary" onClick={deleteUser}>
         DELETE USER
         <GoTrashcan />
       </button>

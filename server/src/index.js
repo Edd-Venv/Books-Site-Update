@@ -8,13 +8,14 @@ const pool = require("../database-conection/db.js");
 const { verify } = require("jsonwebtoken");
 const { hash, compare } = require("bcryptjs");
 const { isAuth } = require("./isAuth.js");
-const redis = require("redis");
 const {
   createAccessToken,
   createRefreshToken,
   sendRefreshToken,
   sendAccessToken
 } = require("./tokens.js");
+const NodeCache = require("node-cache");
+const Cache = new NodeCache();
 
 const server = express();
 
@@ -32,18 +33,39 @@ server.use(
 server.use(express.json()); // to support JSON-encoded bodies
 server.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
 
-/////REDIS
-
-const REDIS_PORT = 4000 || 6379;
-//const client = redis.createClient(REDIS_PORT);
-
 /////////////////////////////////////////////////// API CALLS
+
+server.post("/search", async (req, res) => {
+  const searchAPI = `https://api.penguinrandomhouse.com/resources/v2/title/domains/PRH.US/search/views/search-display?q=${req.body.search_text}&api_key=2n9pws7675zn9bu39htq5gjz`;
+
+  try {
+    const exists = Cache.has(`${req.body.search_text}`);
+
+    if (exists) {
+      res.json({ data: Cache.get(`${req.body.search_text}`) });
+    } else {
+      const result = await (await fetch(searchAPI)).json();
+      Cache.set(`${req.body.search_text}`, result, 691200);
+      res.json({ data: result });
+    }
+  } catch (error) {
+    res.json({ error: error });
+  }
+});
+
 const sundayReadsAPI =
   "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/20/titles?showCovers=true&api_key=2n9pws7675zn9bu39htq5gjz";
 server.get("/sundayReads", async (req, res) => {
   try {
-    const result = await (await fetch(sundayReadsAPI)).json();
-    res.json({ data: result });
+    const exists = Cache.has("sundayReadsData");
+
+    if (exists) {
+      res.json({ data: Cache.get("sundayReadsData") });
+    } else {
+      const result = await (await fetch(sundayReadsAPI)).json();
+      Cache.set("sundayReadsData", result, 691200);
+      res.json({ data: result });
+    }
   } catch (error) {
     res.json({ error: error });
   }
@@ -53,8 +75,14 @@ const historyAPI =
   "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showCovers=true&api_key=2n9pws7675zn9bu39htq5gjz";
 server.get("/history", async (req, res) => {
   try {
-    const result = await (await fetch(historyAPI)).json();
-    res.json({ data: result });
+    const exists = Cache.has("historyData");
+    if (exists) {
+      res.json({ data: Cache.get("historyData") });
+    } else {
+      const result = await (await fetch(historyAPI)).json();
+      Cache.set("historyData", result, 691200);
+      res.json({ data: result });
+    }
   } catch (error) {
     res.json({ error: error });
   }
@@ -64,8 +92,14 @@ const bestSellersAPI =
   "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showBestsellers=true&showCovers=true&api_key=2n9pws7675zn9bu39htq5gjz";
 server.get("/bestSellers", async (req, res) => {
   try {
-    const result = await (await fetch(bestSellersAPI)).json();
-    res.json({ data: result });
+    const exists = Cache.has("bestSellersData");
+    if (exists) {
+      res.json({ data: Cache.get("bestSellersData") });
+    } else {
+      const result = await (await fetch(bestSellersAPI)).json();
+      Cache.set("bestSellersData", result, 691200);
+      res.json({ data: result });
+    }
   } catch (error) {
     res.json({ error: error });
   }
@@ -219,13 +253,20 @@ server.get("/userName", async (req, res, next) => {
 
   if (userId !== null) {
     try {
-      const user = await pool.query(
-        `SELECT person_name FROM person WHERE id_uid = '${userId}'`
-      );
+      const exists = Cache.has(`${userId}`);
 
-      res.send({ name: user.rows[0].person_name });
+      if (exists) {
+        res.json({ name: Cache.get(`${userId}`) });
+      } else {
+        const user = await pool.query(
+          `SELECT person_name FROM person WHERE id_uid = '${userId}'`
+        );
+
+        Cache.set(`${userId}`, user.rows[0].person_name, 691200);
+        res.send({ name: user.rows[0].person_name });
+      }
     } catch (error) {
-      res.send({ error: error });
+      res.json({ error: error });
     }
   }
 });
