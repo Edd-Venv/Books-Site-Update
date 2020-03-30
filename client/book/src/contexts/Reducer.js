@@ -50,12 +50,3 @@ export const sundayReadsReducer = (state, action) => {
       throw new Error();
   }
 };
-
-export const userInfoReducer = (state, action) => {
-  switch (action.type) {
-    case "SETUSERNAME":
-      return { data: action.data };
-    default:
-      throw new Error();
-  }
-};

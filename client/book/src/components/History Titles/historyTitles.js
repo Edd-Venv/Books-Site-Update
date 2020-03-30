@@ -37,6 +37,7 @@ const HistoryTitles = () => {
       }
     }
   }
+
   return (
     <React.Fragment>
       {isLoaded === false ? (

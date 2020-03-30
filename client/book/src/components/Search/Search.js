@@ -17,10 +17,16 @@ const Search = () => {
   };
 
   const onAddSearch = text => {
-    const apiKey = "2n9pws7675zn9bu39htq5gjz";
-    const url = `https://api.penguinrandomhouse.com/resources/v2/title/domains/PRH.US/search/views/search-display?q=${text}&api_key=${apiKey}`;
     (async function fetchData() {
-      await fetch(url)
+      await fetch("http://localhost:4000/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          search_text: text
+        })
+      })
         .then(response => {
           return response.json();
         })
@@ -28,8 +34,8 @@ const Search = () => {
           dispatch({
             type: "SEARCH",
             isLoaded: true,
-            data: Data.data.results[0],
-            summary: Data.data.results[0].flapCopy
+            data: Data.data.data.results[0],
+            summary: Data.data.data.results[0].flapCopy
               .replace(/<p>/g, " ")
               .replace(/<b>/g, " ")
               .replace(/p>/g, " ")
