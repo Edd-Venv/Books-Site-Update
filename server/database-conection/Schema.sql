@@ -45,7 +45,7 @@ create table person (
     id_uid UUID PRIMARY KEY NOT NULL,
     person_name VARCHAR(50) NOT NULL,
     password VARCHAR(400) NOT NULL,
-    refreshtoken VARCHAR(400),
+    refreshtoken VARCHAR,
     UNIQUE(person_name),
     UNIQUE(refreshtoken)
 );
