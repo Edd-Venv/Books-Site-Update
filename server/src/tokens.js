@@ -3,19 +3,15 @@ const { sign } = require("jsonwebtoken");
 // Create tokens
 // ----------------------------------
 const createAccessToken = userId => {
-  return sign({ userId }, process.env.ACCESS_TOKEN_SECRET || "EDWINRULES", {
+  return sign({ userId }, "EDWINRULES", {
     expiresIn: "14d"
   });
 };
 
 const createRefreshToken = userId => {
-  return sign(
-    { userId },
-    process.env.REFRESH_TOKEN_SECRET || "EDWINRULESEVENMORE",
-    {
-      expiresIn: "14d"
-    }
-  );
+  return sign({ userId }, "EDWINRULESEVENMORE", {
+    expiresIn: "14d"
+  });
 };
 
 // Send tokens

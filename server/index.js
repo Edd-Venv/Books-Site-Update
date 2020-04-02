@@ -254,102 +254,73 @@ server.get("/userName", async (req, res, next) => {
   const userId = isAuth(req);
 
   if (userId !== null) {
-    try {
-      const user = await pool.query(
-        `SELECT person_name FROM person WHERE id_uid = '${userId}'`
-      );
+    const exists = Cache.has(`${userId}`);
 
-      res.send({ name: user.rows[0].person_name });
-    } catch (error) {
-      res.json({ error: error });
+    if (exists) {
+      res.json({ name: Cache.get(`${userId}`) });
+    } else {
+      try {
+        const user = await pool.query(
+          `SELECT person_name FROM person WHERE id_uid = '${userId}'`
+        );
+        Cache.set(`${userId}`, user.rows[0].person_name, 691200);
+        res.send({ name: user.rows[0].person_name });
+      } catch (error) {
+        res.json({ error: error });
+      }
     }
   }
 });
+
+async function saveBook(req, res, next) {
+  const userId = isAuth(req);
+  if (userId !== null) {
+    try {
+      //Check If Book is Already Saved
+      const checkDB = await pool.query(
+        `SELECT * FROM book WHERE book_key = '${req.body.book_key}'
+           AND person_id = '${userId}'`
+      );
+
+      const doesBookExist = checkDB.rows[0];
+      if (doesBookExist !== undefined) return null;
+
+      const values = [
+        userId,
+        req.body.book_image,
+        req.body.book_key,
+        req.body.book_title,
+        req.body.book_author,
+        req.body.book_price,
+        req.body.book_currencyCode,
+        req.body.book_pages
+      ];
+
+      pool.query(
+        `INSERT INTO book (person_id, book_image, book_key, book_title,
+            book_author,
+            book_price,
+            book_currencyCode,
+            book_pages) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8)`,
+        values,
+        (q_err, q_res) => {
+          if (q_err) return next(q_err);
+          res.json({ message: "Book Saved" });
+        }
+      );
+    } catch (err) {
+      res.json({ error: err });
+    }
+  }
+}
 
 //Saving a book after the user authentication
 server.post("/", async (req, res, next) => {
-  const userId = isAuth(req);
-  if (userId !== null) {
-    try {
-      //Check If Book is Already Saved
-      const checkDB = await pool.query(
-        `SELECT * FROM book WHERE book_key = '${req.body.book_key}'
-           AND person_id = '${userId}'`
-      );
-
-      const doesBookExist = checkDB.rows[0];
-      if (doesBookExist !== undefined) return null;
-
-      const values = [
-        userId,
-        req.body.book_image,
-        req.body.book_key,
-        req.body.book_title,
-        req.body.book_author,
-        req.body.book_price,
-        req.body.book_currencyCode,
-        req.body.book_pages
-      ];
-
-      pool.query(
-        `INSERT INTO book (person_id, book_image, book_key, book_title,
-            book_author,
-            book_price,
-            book_currencyCode,
-            book_pages) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8)`,
-        values,
-        (q_err, q_res) => {
-          if (q_err) return next(q_err);
-          res.json({ message: "Book Saved" });
-        }
-      );
-    } catch (err) {
-      res.json({ error: err });
-    }
-  }
+  saveBook(req, res, next);
 });
-
 //Saving a searched book
 server.post("/search/saveBook", async (req, res, next) => {
-  const userId = isAuth(req);
-  if (userId !== null) {
-    try {
-      //Check If Book is Already Saved
-      const checkDB = await pool.query(
-        `SELECT * FROM book WHERE book_key = '${req.body.book_key}'
-           AND person_id = '${userId}'`
-      );
-
-      const doesBookExist = checkDB.rows[0];
-      if (doesBookExist !== undefined) return null;
-
-      const values = [
-        userId,
-        req.body.book_image,
-        req.body.book_key,
-        req.body.book_title,
-        req.body.book_author,
-        req.body.book_price,
-        req.body.book_currencyCode,
-        req.body.book_pages
-      ];
-
-      pool.query(
-        `INSERT INTO book (person_id, book_image, book_key, book_title,
-            book_author,
-            book_price,
-            book_currencyCode,
-            book_pages) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8)`,
-        values,
-        (q_err, q_res) => {
-          if (q_err) return next(q_err);
-          res.json({ message: "Book Saved" });
-        }
-      );
-    } catch (err) {
-      res.json({ error: err });
-    }
-  }
+  saveBook(req, res, next);
 });
 
 //Getting Protected data
@@ -366,8 +337,7 @@ server.get("/protected", async (req, res) => {
     }
   } catch (err) {
     res.json({
-      error: `${err.message}`,
-      db: books.rows
+      error: `${err.message}`
     });
   }
 });
@@ -424,6 +394,7 @@ server.post("/settings/changeName", async (req, res) => {
         WHERE id_uid = '${userId}' AND person_name = '${req.body.old_name}'`
       );
     }
+    Cache.set(`${userId}`, req.body.new_name, 691200);
     res.json({ message: "User Name Updated" });
   } catch (error) {
     res.json({ error: "User Name Already Taken." });
