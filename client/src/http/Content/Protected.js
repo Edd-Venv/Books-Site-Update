@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { UserContext } from "../../App.js";
 import Navigation from "../Navigation/Navigation.js";
+import OneBook from "./oneBook.js";
+import "./Protected.css";
 
-const Protected = () => {
+const Protected = props => {
   // Could have something here to check for the time when the accesstoken expires
   // and then call the refresh_token endpoint to get a new accesstoken automatically
   const [user] = useContext(UserContext);
@@ -70,26 +72,71 @@ const Protected = () => {
         <h2 style={{ textAlign: "center", fontWeight: "bold" }}>
           You Don't Have Books Saved.
         </h2>
+      ) : user.accesstoken && content[0].length <= 2 ? (
+        <OneBook deleteBook={deleteBook} content={content} />
       ) : (
-        <div className="flex-container-header">
+        <div className="books-container">
           {content[0].map(info => {
             return (
-              <div key={info.book_key} style={{ width: "20%" }}>
-                <img
-                  alt="loading"
-                  src={info.book_image}
-                  className="img-thumbnail"
-                  style={{ width: "100%" }}
-                  id="box"
-                />
-                <button
-                  onClick={deleteBook.bind(this, [
-                    info.book_title,
-                    info.book_key
-                  ])}
-                >
-                  Delete
-                </button>
+              <div
+                className="card mb-3"
+                style={{ width: "85%" }}
+                key={info.book_key}
+              >
+                <div className="row no-gutters">
+                  <div style={{ width: "30%", marginLeft: "3.2%" }}>
+                    <img
+                      alt="loading"
+                      src={info.book_image}
+                      className="img-thumbnail"
+                      style={{ width: "100%" }}
+                    />
+                  </div>
+                  <div className="col-md-8">
+                    <div className="card-body">
+                      <h2 className="card-title" style={{ marginLeft: "2%" }}>
+                        {info.book_title}
+                      </h2>
+                      <p
+                        className="card-text"
+                        style={{ fontSize: "1.5rem", width: "100%" }}
+                      >
+                        {info.author}
+                      </p>
+                      <p
+                        className="card-text"
+                        style={{ fontSize: "1.5rem", width: "100%" }}
+                      >
+                        <strong>Author : </strong>
+                        {info.book_author}
+                      </p>
+                      <p
+                        className="card-text"
+                        style={{ fontSize: "1.5rem", width: "100%" }}
+                      >
+                        <strong>Number of pages : </strong>
+                        {info.book_pages}
+                      </p>
+                      <p
+                        className="card-text"
+                        style={{ fontSize: "1.5rem", width: "100%" }}
+                      >
+                        <strong>Price : </strong>
+                        {info.book_price}
+                        {info.book_currencycode}
+                      </p>
+                      <button
+                        className="btn btn-danger"
+                        onClick={deleteBook.bind(this, [
+                          info.book_title,
+                          info.book_key
+                        ])}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>{" "}
+                </div>
               </div>
             );
           })}

@@ -61,6 +61,7 @@ const HistoryTitles = () => {
                   id="box"
                 />
                 <button
+                  className="btn btn-primary"
                   onClick={saveBook.bind(this, [
                     info._links[1].href,
                     info.isbn,

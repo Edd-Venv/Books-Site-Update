@@ -255,18 +255,11 @@ server.get("/userName", async (req, res, next) => {
 
   if (userId !== null) {
     try {
-      const exists = Cache.has(`${userId}`);
+      const user = await pool.query(
+        `SELECT person_name FROM person WHERE id_uid = '${userId}'`
+      );
 
-      if (exists) {
-        res.json({ name: Cache.get(`${userId}`) });
-      } else {
-        const user = await pool.query(
-          `SELECT person_name FROM person WHERE id_uid = '${userId}'`
-        );
-
-        Cache.set(`${userId}`, user.rows[0].person_name, 691200);
-        res.send({ name: user.rows[0].person_name });
-      }
+      res.send({ name: user.rows[0].person_name });
     } catch (error) {
       res.json({ error: error });
     }
