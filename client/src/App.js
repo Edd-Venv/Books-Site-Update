@@ -60,7 +60,7 @@ function App() {
           <Router id="router">
             <Login path="login" />
             <Register path="register" />
-            <Protected path="protected" />
+            <Protected path="protected" logOutCallback={logOutCallback} />
             <Settings path="settings" logOutCallback={logOutCallback} />
             <Content
               path="/"

@@ -49,7 +49,10 @@ const Protected = () => {
 
   return (
     <React.Fragment>
-      <Navigation displayLogin={"dontDisplayLoginForm"} />
+      <Navigation
+        displayLogin={"dontDisplayLoginForm"}
+        logOutCallback={props.logOutCallback}
+      />
       <br />
       {!user.accesstoken ? (
         <h2 style={{ textAlign: "center", fontWeight: "bold" }}>

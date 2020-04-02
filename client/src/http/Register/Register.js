@@ -22,7 +22,7 @@ const Register = () => {
     ).json();
     if (!result.error) {
       console.log(result.message);
-      navigate("/");
+      navigate("/login");
     } else {
       console.log(result.error);
     }

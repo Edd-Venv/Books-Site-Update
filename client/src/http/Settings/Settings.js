@@ -38,7 +38,7 @@ function Settings(props) {
       <h3 style={style}>Change Password</h3>
       <ChangeUserPwd logOutCallback={props.logOutCallback} />
       <h3>DELETE Profile</h3>
-      <button className="btn btn-primary" onClick={deleteUser}>
+      <button className="btn btn-danger" onClick={deleteUser}>
         DELETE USER
         <GoTrashcan />
       </button>
