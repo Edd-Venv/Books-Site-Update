@@ -41,10 +41,18 @@ const Register = () => {
       <Navigation displayLogin={"dontDisplayLoginForm"} />
       <div className="login-wrapper">
         <form
+          className="card mb-3"
           onSubmit={handleSubmit}
-          style={{ width: "30%", margin: "0 auto", font: "2rem" }}
+          style={{
+            width: "30%",
+            margin: "0 auto",
+            font: "2rem",
+            marginTop: "10%"
+          }}
         >
-          <h3 style={{ textAlign: "center" }}>REGISTER</h3>
+          <h3 style={{ textAlign: "center" }}>
+            REGISTER <hr />
+          </h3>
           <div className="form-group">
             <label htmlFor="name">USER NAME</label>
             <input
@@ -71,7 +79,7 @@ const Register = () => {
             />
           </div>
           <button type="submit" className="btn btn-primary">
-            Register
+            REGISTER
           </button>
         </form>
       </div>

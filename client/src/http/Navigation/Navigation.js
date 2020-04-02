@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { UserContext } from "../../App.js";
 import { Link } from "@reach/router";
 import UserLogo from "./UserLogo.js";
-import { MdSettings } from "react-icons/md";
+import { GoGear, GoPerson } from "react-icons/go";
 
 const Navigation = ({ logOutCallback }) => {
   const [user] = useContext(UserContext);
@@ -46,7 +46,7 @@ const Navigation = ({ logOutCallback }) => {
     if (user.accesstoken)
       return (
         <Link className="nav-link" to="/settings">
-          <MdSettings />
+          <GoGear />
         </Link>
       );
     else return null;
@@ -91,14 +91,14 @@ const Navigation = ({ logOutCallback }) => {
                 GitHub<span className="sr-only">(current)</span>
               </a>
             </li>
+
             <li className="nav-item active">{showSettings()}</li>
           </ul>
         </div>
-
-        <h4 style={{ color: "black" }}>
-          <i>Welcome</i>
+        <div>
+          <GoPerson />
           <UserLogo />
-        </h4>
+        </div>
       </nav>
     </React.Fragment>
   );

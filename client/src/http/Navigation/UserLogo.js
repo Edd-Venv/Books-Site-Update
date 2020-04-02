@@ -44,4 +44,4 @@ const UserLogo = props => {
     </span>
   );
 };
-export default React.memo(UserLogo);
+export default UserLogo;

@@ -52,8 +52,18 @@ const Login = props => {
       <div className={displayLogin}>
         <form
           onSubmit={handleSubmit}
-          style={{ width: "30%", margin: "0 auto", font: "2rem" }}
+          className="card mb-3"
+          style={{
+            width: "30%",
+            margin: "0 auto",
+            font: "2rem",
+            marginTop: "10%"
+          }}
         >
+          <h3 style={{ textAlign: "center" }}>
+            LOGIN
+            <hr />
+          </h3>
           <div className="form-group">
             <label htmlFor="name">USER NAME</label>
             <input
@@ -80,7 +90,7 @@ const Login = props => {
             />
           </div>
           <button type="submit" className="btn btn-primary">
-            Login
+            LOGIN
           </button>
         </form>
       </div>

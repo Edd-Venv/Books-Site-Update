@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../App.js";
 
 const SearchResult = props => {
   const { summary, data } = props;
@@ -9,7 +10,7 @@ const SearchResult = props => {
       return console.log("You need to login to Save Book.");
     else {
       const result = await (
-        await fetch("http://localhost:4000/search/saveBook", {
+        await fetch("http://18.222.115.53:4000/search/saveBook", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -106,4 +107,4 @@ const SearchResult = props => {
     </div>
   );
 };
-export default React.memo(SearchResult);
+export default SearchResult;

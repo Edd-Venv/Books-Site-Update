@@ -5,7 +5,7 @@ export const SearchReducer = (state, action) => {
         isLoaded: true,
         summary: action.summary,
         data: action.data,
-        display: "show"
+        display: action.display
       };
 
     case "DISPLAY":

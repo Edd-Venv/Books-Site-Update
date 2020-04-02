@@ -36,7 +36,7 @@ const Search = () => {
 
   const onAddSearch = text => {
     (async function fetchData() {
-      await fetch("http://localhost:4000/search", {
+      await fetch("http://18.222.115.53:4000/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
