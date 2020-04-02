@@ -2,6 +2,38 @@ import React from "react";
 
 const SearchResult = props => {
   const { summary, data } = props;
+  const [user] = useContext(UserContext);
+
+  async function saveBook(Args) {
+    if (!user.accesstoken)
+      return console.log("You need to login to Save Book.");
+    else {
+      const result = await (
+        await fetch("http://localhost:4000/search/saveBook", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user.accesstoken}` //To Be Converted To User ID using Auth in Server
+          },
+          body: JSON.stringify({
+            book_image: Args[0],
+            book_key: Args[1],
+            book_title: Args[2],
+            book_author: Args[3],
+            book_price: Args[4],
+            book_currencyCode: Args[5],
+            book_pages: Args[6]
+          })
+        })
+      ).json();
+
+      if (!result.error) {
+        console.log(result.message);
+      } else {
+        console.log(result.error);
+      }
+    }
+  }
   return (
     <div
       style={{
@@ -53,6 +85,20 @@ const SearchResult = props => {
                 <strong>ISBN : </strong>
                 {data.isbnDisplay}
               </p>
+              <button
+                className="btn btn-primary"
+                onClick={saveBook.bind(this, [
+                  data.coverUrl,
+                  data.isbn,
+                  data.name,
+                  data.authors[0].authorDisplay,
+                  data.prices[0].amount,
+                  data.prices[0].currencyCode,
+                  data.pages
+                ])}
+              >
+                save
+              </button>
             </div>
           </div>
         </div>

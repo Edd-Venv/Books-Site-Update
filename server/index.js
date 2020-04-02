@@ -273,21 +273,18 @@ server.get("/userName", async (req, res, next) => {
   }
 });
 
-//Saving a book after the user authentication
-server.post("/", async (req, res, next) => {
+async function saveBook(req, res, next) {
   const userId = isAuth(req);
   if (userId !== null) {
     try {
       //Check If Book is Already Saved
       const checkDB = await pool.query(
         `SELECT * FROM book WHERE book_key = '${req.body.book_key}'
-         AND person_id = '${userId}'`
+           AND person_id = '${userId}'`
       );
 
       const doesBookExist = checkDB.rows[0];
       if (doesBookExist !== undefined) return null;
-      //I can put the check outside the try catch block to get the error but it will crush the app
-      //res.json(`<p>${req.body.book_title} is already saved.</p>`);
 
       const values = [
         userId,
@@ -299,12 +296,13 @@ server.post("/", async (req, res, next) => {
         req.body.book_currencyCode,
         req.body.book_pages
       ];
+
       pool.query(
         `INSERT INTO book (person_id, book_image, book_key, book_title,
-          book_author,
-          book_price,
-          book_currencyCode,
-          book_pages) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8)`,
+            book_author,
+            book_price,
+            book_currencyCode,
+            book_pages) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8)`,
         values,
         (q_err, q_res) => {
           if (q_err) return next(q_err);
@@ -315,6 +313,16 @@ server.post("/", async (req, res, next) => {
       res.json({ error: err });
     }
   }
+}
+
+//Saving a book after the user authentication
+server.post("/", (req, res, next) => {
+  saveBook(req, res, next);
+});
+
+//Saving a searched book
+server.post("/search/saveBook", (req, res, next) => {
+  saveBook(req, res, next);
 });
 
 //Getting Protected data

@@ -5,20 +5,38 @@ import SearchError from "./SearchError.js";
 import SearchResult from "./SearchResult.js";
 
 const Search = () => {
-  const [state, dispatch] = useReducer(SearchReducer, {
+  const initialState = {
     isLoaded: false,
     summary: "Dummy DATA",
-    data: [],
+    data: {
+      id: "work-247816-PRH.US",
+      key: "247816",
+      name: "Evicted",
+      isbn: 9780553447453,
+      price: 18,
+      pages: 448,
+      isbnDisplay: "978-0-553-44745-3",
+      flapCopy: "Dummy Data",
+      authors: [{ authorDisplay: "Dummy Data" }],
+      prices: [{ amount: "0", currencyCode: "US" }],
+      coverUrl: "www"
+    },
     display: "hide"
-  });
+  };
+
+  const [state, dispatch] = useReducer(SearchReducer, initialState);
 
   const handleClose = () => {
     dispatch({ type: "DISPLAY", display: "hide" });
+    dispatch({
+      type: "SEARCH",
+      ...initialState
+    });
   };
 
   const onAddSearch = text => {
     (async function fetchData() {
-      await fetch("http://18.222.115.53:4000/search", {
+      await fetch("http://localhost:4000/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
