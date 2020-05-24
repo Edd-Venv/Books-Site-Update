@@ -1,9 +1,8 @@
 import React from "react";
-
 import Views from "../../Views.js";
 import Navigation from "../Navigation/Navigation.js";
 
-const Content = React.memo(props => {
+const Content = React.memo((props) => {
   // Could have something here to check for the time when the accesstoken expires
   // and then call the refresh_token endpoint to get a new accesstoken automatically
 

@@ -41,7 +41,7 @@ server.use(express.urlencoded({ extended: true })); // to support URL-encoded bo
 /////////////////////////////////////////////////// API CALLS
 
 server.post("/search", async (req, res) => {
-  const searchAPI = `https://api.penguinrandomhouse.com/resources/v2/title/domains/PRH.US/search/views/search-display?q=${req.body.search_text}&api_key=2n9pws7675zn9bu39htq5gjz`;
+  const searchAPI = `https://api.penguinrandomhouse.com/resources/v2/title/domains/PRH.US/search/views/search-display?q=${req.body.search_text}&api_key`;
 
   try {
     const exists = Cache.has(`${req.body.search_text}`);
@@ -59,7 +59,7 @@ server.post("/search", async (req, res) => {
 });
 
 const sundayReadsAPI =
-  "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/20/titles?showCovers=true&api_key=2n9pws7675zn9bu39htq5gjz";
+  "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/20/titles?showCovers=true&api_key";
 server.get("/sundayReads", async (req, res) => {
   try {
     const exists = Cache.has("sundayReadsData");
@@ -77,7 +77,7 @@ server.get("/sundayReads", async (req, res) => {
 });
 
 const historyAPI =
-  "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showCovers=true&api_key=2n9pws7675zn9bu39htq5gjz";
+  "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showCovers=true&api_key=";
 server.get("/history", async (req, res) => {
   try {
     const exists = Cache.has("historyData");
@@ -94,7 +94,7 @@ server.get("/history", async (req, res) => {
 });
 
 const bestSellersAPI =
-  "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showBestsellers=true&showCovers=true&api_key=2n9pws7675zn9bu39htq5gjz";
+  "https://api.penguinrandomhouse.com/resources/v2/title/domains/SALESINTERNATIONAL/categories/1/titles?showBestsellers=true&showCovers=true&api_key=";
 server.get("/bestSellers", async (req, res) => {
   try {
     const exists = Cache.has("bestSellersData");
