@@ -1,3 +1,6 @@
+/*
+TESTING REPO!!!!
+*/
 require("dotenv/config");
 const path = require("path");
 const http = require("http");
@@ -14,7 +17,7 @@ const {
   createAccessToken,
   createRefreshToken,
   sendRefreshToken,
-  sendAccessToken
+  sendAccessToken,
 } = require("./src/tokens.js");
 const NodeCache = require("node-cache");
 const Cache = new NodeCache();
@@ -27,7 +30,7 @@ server.use(cookieParser());
 server.use(
   cors({
     origin: "http://18.222.115.53:4000",
-    credentials: true
+    credentials: true,
   })
 );
 
@@ -139,7 +142,7 @@ server.post("/register", async (req, res) => {
     res.send({ message: "User Created" });
   } catch (err) {
     res.send({
-      error: `${err.message}`
+      error: `${err.message}`,
     });
   }
 });
@@ -178,7 +181,7 @@ server.post("/login", async (req, res) => {
     sendAccessToken(res, req, accesstoken);
   } catch (err) {
     res.send({
-      error: `${err.message}`
+      error: `${err.message}`,
     });
   }
 });
@@ -194,7 +197,7 @@ server.post("/logout", async (_req, res) => {
   );
 
   return res.send({
-    message: "Logged out"
+    message: "Logged out",
   });
 });
 
@@ -293,7 +296,7 @@ async function saveBook(req, res, next) {
         req.body.book_author,
         req.body.book_price,
         req.body.book_currencyCode,
-        req.body.book_pages
+        req.body.book_pages,
       ];
 
       pool.query(
@@ -332,12 +335,12 @@ server.get("/protected", async (req, res) => {
         `SELECT * FROM book WHERE person_id = '${userId}'`
       );
       res.send({
-        data: books.rows
+        data: books.rows,
       });
     }
   } catch (err) {
     res.json({
-      error: `${err.message}`
+      error: `${err.message}`,
     });
   }
 });
